@@ -1,0 +1,83 @@
+<div loader [switch]="loader">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span class="title">
+        <span class="ftTitulos pr-2">Gráficas</span>
+      </span>
+      <span class="spacer text-center">
+        <div class="table-sio">
+          <div class="row-sio">
+            <div class="cell-sio text-middle px-15x">
+              <mat-form-field appearance="fill">
+                <mat-select [(ngModel)]="tipoGrafica">
+                  <mat-option class="ftTitulos" *ngFor="let opcion of opcionTipoGrafica" [value]="opcion.value" (click)="obtenerPeriodos()">
+                    {{ opcion.text }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="cell-sio text-middle pl-20x">
+              <span class="ftTitulos">Período:</span>
+            </div>
+            <div class="cell-sio text-middle px-15x">
+              <mat-form-field appearance="fill">
+                <mat-select [(ngModel)]="periodoSelecionado" [disabled]="!(tipoGrafica > 0)">
+                  <mat-option class="ftTitulos" *ngFor="let opcion of periodos; let idx = index" (click)="indiceSeleccionado(idx)" [value]="opcion.value">
+                    {{ opcion.text }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="cell-sio text-middle pl-20x">
+              <div class="ftTitulos" *ngIf="datosCargados">Ramos:</div>
+            </div>
+            <div class="cell-sio text-middle px-15x">
+              <mat-form-field appearance="fill" class="pl-2" *ngIf="datosCargados">
+                <mat-select [(ngModel)]="ramoSeleccionado" [disabled]="!(tipoGrafica > 0)">
+                  <mat-option class="ftTitulos" [value]="0">Todos</mat-option>
+                  <mat-option class="ftTitulos" *ngFor="let opcion of ramos; let idx = index" (click)="obtenerDatos(periodoSelecionado, (periodoSelecionado - 1), null, ramoSeleccionado)" [value]="opcion.value">
+                    {{ opcion.text }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </span>
+      <!-- <div class="col pl-4">
+        <div class="row">
+          <div class="col pb-3">
+            <buscador-sio apiName="Sio4ClienteSearchAPI" [remoteName]="urlBuscador" [strSearch]="strSearch"
+              (redirect)="filtrarCliente($event)" (reiniciarProceso)="reiniciarProceso($event)" minLetras="2"
+              [isfocus]="true" class="barraInferior"></buscador-sio>
+          </div>
+        </div>
+      </div> -->
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="container-fluid fluid-container fill">
+    <div class="row" *ngIf="!datosCargados">
+      <div class="col-12">
+        <div class="vacio">Selecciona los datos a mostrar y período</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <!-- <h3 *ngIf="datosCargados" class="font-500 px-15x py-10x">Primas pagadas por cliente</h3> -->
+        <div id="tabla1" [hidden]="nuevosDatos"></div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <!-- <h3 *ngIf="datosCargados" class="font-500 px-15x py-10x">Primas pagadas por ramo</h3> -->
+        <div id="tabla2" [hidden]="nuevosDatos"></div>
+      </div>
+      <div class="col-12">
+        <!-- <h3 *ngIf="datosCargados" class="font-500 px-15x py-10x">Comparativo</h3> -->
+        <div id="tabla3" [hidden]="nuevosDatos" (click)="onclickEvent($event)"></div>
+      </div>
+      <div class="col-12">
+        <!-- <h3 *ngIf="datosCargados" class="font-500 px-15x py-10x">Acumulativo</h3> -->
+        <div id="tabla4" [hidden]="nuevosDatos"></div>
+      </div>
+    </div>
+  </div>
+</div>

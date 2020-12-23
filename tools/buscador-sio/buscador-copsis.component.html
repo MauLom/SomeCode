@@ -1,0 +1,24 @@
+<div class="buscador-content">
+    <div *ngIf="text!=''" class="buscador-cell text">{{text}}</div>
+    <div class="buscador-cell">
+        <div #buscador>
+            <button mat-button matPrefix mat-icon-button class="pt-2">
+                <mat-icon matPrefix>search</mat-icon>
+            </button>
+            <input #buscadorSio [id]="'input_' + idBuscador" tab-index="1" matInput type="text" (keyup)="searchKeyUp($event)" (keydown)="handlerIgnored($event)"
+                (focus)="txHandler(true)" (blur)="txHandler(false)" autocomplete="off" [(ngModel)]="strSearch">
+            <button class="pt-2" mat-button *ngIf="strSearch" matSuffix mat-icon-button aria-label="Clear" (click)="limpiarInput()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <span [id]="'span_' + idBuscador" *ngIf="searchResult" class="span-search">
+            <ul *ngIf="searchEnabled == true" class="ul-search mat-elevation-z1">
+                <li *ngFor="let search of searchResult" [value]="search.c1" (click)="getDetalle(search)" class="text-elipsis"
+                    [class.selected]="search?.selected" [title]="search.c2" [innerHTML]="'<b>' + search.c2.substring(0, search.c2.toLowerCase().indexOf(textoTemporal.toLowerCase())) + '</b>' +
+                search.c2.substring(search.c2.toLowerCase().indexOf(textoTemporal.toLowerCase()), (search.c2.toLowerCase().indexOf(textoTemporal.toLowerCase()) + textoTemporal.length)) + 
+                '<b>' + search.c2.substring((search.c2.toLowerCase().indexOf(textoTemporal.toLowerCase()) + textoTemporal.length), search.length) + '</b>'"></li>
+                <li *ngIf="searchResult.length == 0 && dataSource.length == 0" class="no-result">{{mensaje}}</li>
+            </ul>
+        </span>
+    </div>
+</div>
